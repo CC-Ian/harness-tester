@@ -1,0 +1,22 @@
+Ian Zanath hardware tester solution file. Generated based on Oct. 4th submission.
+
+1. I2C resistor R3 should be pull-up not pull-down.
+2. NEO-M8N should have VDD_USB connected to +3v3
+3. MAX2679 should be placed to the left of the inductor and capacitor L1 and C5.
+4. NEO-M8N LNA_EN should be connected to RF_IN through a 25k resistor.
+5. Correct R3 on the PCB. Pad 1 should connect to 3v3 not ground.
+6. Correct placement of Bauln on PCB.
+7. C6 keepout area overlaps with the Bauln's keepout. Technically these components shouldn't overlap, but, best practice.
+8. The RF trace coming out of B1 could be a little cleaner. Possible trace impedance matching here as well.
+9. Data traces routed on the layer below the anenna feed. Have room to make a different routing which avoids this.
+10. Back Copper traces running to CY_INT and CY_RST_N are too close together. This violates minimum clearance.
+11. RGB Annode is not actually connected to +3v3 as shown by the ratsnest. Could push LED_R via upwards to resolve, connecting 3v3.
+12. Possibly a constraint violation around NEO-M8N pins 8 and 9. I re-routed the safeboot trace and moved the timePulse via, getting rid of the acute angles.
+13. There's room to space out the traces bit more, with a ground between them to minimize corsstalk.
+14. Neo-M8N pin 8 should connect to +3v3.
+15. Likely another clearance violation between CY_RST_N and CBL_16. (trace spacing)
+16. Add pinMode assertions for SafeBoot and RST pins
+17. Begin CY class, handle an init failure.
+18. The original code will always attempt to perform the test unless the button is pulled low. Axe the return on line 138, and enter the if statement when the button is pulled low.
+19. bool `passed` on line 142 should start true, then be set false at each failing case. This prevents a passing section from overwriting a failure.
+20. set status after the test execution and before the result is logged. Probably want a delay here to allow the user to see the result as well.
